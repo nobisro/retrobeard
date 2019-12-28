@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Header from './Header.js'
 import RetroModal from './RetroModal.js'
 import RetroCard from './RetroCard.js';
 import { HeaderButton } from './RetroButtons.js'
@@ -8,6 +9,7 @@ import './App.css';
 
 const App = () => {
   const [items, setItems] = useState([])
+  const [itemsObject, setItemsObject] = useState({})
   const [open, setOpen] = useState(false)
   const [category, setCategory] = useState(-1);
 
@@ -18,49 +20,35 @@ const App = () => {
   const closeModal = () => setOpen(false)
 
   const handleAddCard = (retro) => {
-    const updatedItems = [...items];
-    updatedItems.push(retro)
-    setItems(updatedItems)
+    const updatedItemsObject = Object.assign({}, itemsObject);
+    if (!updatedItemsObject[retro.catId]) {
+      updatedItemsObject[retro.catId] = []
+    }
+    updatedItemsObject[retro.catId].push(retro)
+    setItemsObject(updatedItemsObject);
     closeModal()
-  }
-
-  const createHeaders = () => {
-    return DEFAULT_HEADERS.map(({ title, catId }) => {
-      return (
-        <div className={`header item-${catId}`}>
-          {title}
-          <HeaderButton
-            onClick={openModal}
-            catId={catId}
-          />
-
-        </div>
-      )
-    })
-  }
-
-  const createItems = () => {
-    return items.map(item => {
-      return (
-        <RetroCard
-          title={item.title}
-          description={item.description}
-        />
-      )
-    })
   }
 
   return (
     <>
       <div className='container'>
-        {createHeaders()}
-        {createItems()}
+        {DEFAULT_HEADERS.map(({ title, catId }) => {
+            return (
+              <Header 
+                title={title}
+                onClick={openModal}
+                catId={catId}
+                items={itemsObject[catId]}
+              />
+            )
+    })}
       </div>
 
       <RetroModal
         open={open}
         closeModal={closeModal}
         handleAddCard={handleAddCard}
+        catId={category}
       />
 
     </>

@@ -9,6 +9,7 @@ const useStyles = makeStyles(theme => ({
         background: 'green',
         borderRadius: 3,
         alignItems: 'flex-end',
+        marginTop: '2rem'
     },
 }))
 
@@ -17,7 +18,7 @@ export const HeaderButton = ({ onClick, catId }) => {
         <IconButton
             color='primary'
             size='size'
-            onClick={onClick}
+            onClick={() => onClick(catId)}
         >
             <AddIcon />
         </IconButton>

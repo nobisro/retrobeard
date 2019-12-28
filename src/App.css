@@ -2,12 +2,21 @@
   /* display: grid;
   grid-template-columns: repeat(4, auto [col-start]);
   grid-template-rows: auto; */
-  justify-items: center;
   /* background-color: #212121; */
+  border: 2px solid green;
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  flex-wrap: wrap;
 }
 
 .header {
   font-weight: bold;
+  /* width: 22%; */
+  /* align-content: center; */
+  /* width: '25%'; */
+  /* min-width: 100px; */
+  /* border: 1px solid blue; */
 }
 
 .button {
