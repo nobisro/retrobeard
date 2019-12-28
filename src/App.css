@@ -1,0 +1,15 @@
+.container {
+  /* display: grid;
+  grid-template-columns: repeat(4, auto [col-start]);
+  grid-template-rows: auto; */
+  justify-items: center;
+  /* background-color: #212121; */
+}
+
+.header {
+  font-weight: bold;
+}
+
+.button {
+  margin-left: 0.25rem;
+}
