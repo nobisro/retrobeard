@@ -28,6 +28,9 @@ const useModalStyle = makeStyles(theme => ({
         minWidth: '95%',
         minHeight: '8rem',
         maxHeight: '8rem',
+    },
+    bold: {
+        fontWeight: 'bold',
     }
 }))
 
@@ -45,11 +48,12 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
     const [modalStyle] = React.useState(getModalStyle)
     const [title, setTitle] = React.useState('')
     const [description, setDescription] = React.useState('')
-    const emojis = ['🍻', '😻', '💡', '🤔', '🔥', '🏁']
+    const [isValid, setIsValid] = React.useState(true)
+
+    const emojis = ['🍻', '😻', '💡', '🤔', '🔥', '🏁', '🦖', '⭐', '🌈']
 
     React.useEffect(() => {
         if (isEdit) {
-            console.log('setting modal to edit mode')
             setTitle(retroEdit.title)
             setDescription(retroEdit.description)
         }
@@ -60,14 +64,23 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
         setDescription('')
     }
 
+    const validateTitle = (value) => {
+        if (value.length) {
+            setIsValid(true)
+        } else {
+            setIsValid(false)
+        }
+    }
+
     return (
         <Modal
             className={classes.root}
             open={open}
             onBackdropClick={closeModal}
+            onClose={clearAll}
         >
             <div style={modalStyle} className={classes.paper}>
-                <p>Title</p>
+                <p className={classes.bold}>Title</p>
                 <Input
                     color='primary'
                     type='text'
@@ -75,11 +88,14 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
                     width="50"
                     className={classes.title}
                     onChange={(e) => {
+                        console.log('e.target.value:', e.target.value)
                         setTitle(e.target.value)
+                        validateTitle(e.target.value)
                     }}
                     value={title}
+                    error={!isValid}
                 />
-                <p>Description</p>
+                <p className={classes.bold}>Description</p>
                 <textarea
                     placeholder='Optional'
                     className={classes.description}
@@ -87,6 +103,7 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
                         setDescription(e.target.value)
                     }}
                     value={description}
+
                 />
 
                 <div style={{
@@ -97,7 +114,7 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
                     {emojis.map((emoji, index) => (
                     <span 
                         key={index}
-                        style={{fontSize: 32}} 
+                        style={{fontSize: 32, padding: '0.2rem', marginTop: '1rem'}} 
                         onClick={()=>{
                             setDescription(description + emoji)
                         }}
@@ -109,14 +126,22 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
                 
                 <AddCardButton
                     onClick={() => {
-                        if (isEdit) {
+                        validateTitle(title);
+
+                        if (!isValid) {
+                            return;
+                        }
+
+                        if (isEdit && isValid) {
                             handleSaveEditedRetro({
                                 title: title,
                                 description: description,
                             })
                             clearAll();
+                            return;
                         }
-                        console.log('adding????')
+
+
                         handleAddCard({
                             id: Math.floor(Math.random() * 100000),
                             catId: catId, 

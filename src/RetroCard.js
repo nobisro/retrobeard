@@ -10,6 +10,15 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 
+const BACKGROUND_COLOR_MAP = {
+    1: '#1d781d',
+    // 2: '#00B2EE',
+    // 2: 'rgb(40,120,180)',
+    2: '#01768b',
+    3: '#ff960b',
+    4: '#7f187f',
+}
+
 const useStyles = makeStyles(theme =>({
     container: {
         display: 'flex',
@@ -21,6 +30,7 @@ const useStyles = makeStyles(theme =>({
         overflowWrap: 'break-word',
         margin: '1rem 0.5rem',
         boxShadow: theme.shadows[2],
+        // fontSize: theme.fontSize
     },
     // bullet: {
     //     display: 'inline-block',
@@ -37,17 +47,15 @@ const useStyles = makeStyles(theme =>({
         background: 'green',
         padding: '0.5rem',
         color: 'white',
-        fontSize: 72,
+        border: '1px solid red',
         overflowWrap: 'break-word',
-        flexBasis: 0,
-
     },
     content: {
         display:'flex',
         flexWrap: 'wrap',
         justifyContent: 'center',
         overflowWrap: 'break-word',
-        fontSize: 72,
+        fontSize: '72pt',
         minHeight: '100px',
 
     }
@@ -55,13 +63,13 @@ const useStyles = makeStyles(theme =>({
 
 const RetroCard = ({ id, title, description, catId, onDeleteRetro, onEditRetro }) => {
     const classes = useStyles();
-
     return (
         <div className={classes.container}>
         <Card className={classes.card}>
             <CardHeader
                 title={title}
                 className={classes.header}
+                style={{backgroundColor: BACKGROUND_COLOR_MAP[catId]}}
             >
             <Typography className={classes.title} color="textPrimary" gutterBottom>
                 {title}

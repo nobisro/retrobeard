@@ -14,7 +14,6 @@ const Header = ({title, catId, onClick, onDeleteRetro, onEditRetro, items = []})
             catId={catId}
             />
             {items.map(item => {
-                console.log('item:', item)
                 return (
                     <RetroCard
                     id={item.id}
