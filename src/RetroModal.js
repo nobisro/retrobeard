@@ -12,11 +12,11 @@ const useModalStyle = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         position: 'absolute',
-        width: 200,
-        height: 400,
+        width: 350,
+        height: 500,
         backgroundColor: theme.palette.background.paper,
         border: '2px solid #000',
-        boxShadow: theme.shadows[5],
+        boxShadow: theme.shadows[8],
         padding: theme.spacing(2, 4, 3),
     },
     title: {
@@ -39,7 +39,7 @@ const getModalStyle = () => {
     };
 }
 
-const RetroModal = ({ open, closeModal, handleAddCard, catId }) => {
+const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSaveEditedRetro, retroEdit }) => {
     const classes = useModalStyle()
 
     const [modalStyle] = React.useState(getModalStyle)
@@ -47,6 +47,13 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId }) => {
     const [description, setDescription] = React.useState('')
     const emojis = ['🍻', '😻', '💡', '🤔', '🔥', '🏁']
 
+    React.useEffect(() => {
+        if (isEdit) {
+            console.log('setting modal to edit mode')
+            setTitle(retroEdit.title)
+            setDescription(retroEdit.description)
+        }
+    }, [retroEdit])
 
     const clearAll = () => {
         setTitle('')
@@ -58,10 +65,8 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId }) => {
             className={classes.root}
             open={open}
             onBackdropClick={closeModal}
-            catId={catId}
         >
             <div style={modalStyle} className={classes.paper}>
-                {/* <p>Add a card</p> */}
                 <p>Title</p>
                 <Input
                     color='primary'
@@ -72,11 +77,11 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId }) => {
                     onChange={(e) => {
                         setTitle(e.target.value)
                     }}
+                    value={title}
                 />
                 <p>Description</p>
                 <textarea
                     placeholder='Optional'
-                    rowsMin={4}
                     className={classes.description}
                     onChange={(e) => {
                         setDescription(e.target.value)
@@ -89,11 +94,11 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId }) => {
                     alignContent: 'space-between', 
                     padding: '0.5rem 0.25rem'}
                 }>
-                    {emojis.map(emoji => (
+                    {emojis.map((emoji, index) => (
                     <span 
+                        key={index}
                         style={{fontSize: 32}} 
                         onClick={()=>{
-
                             setDescription(description + emoji)
                         }}
                     >
@@ -104,6 +109,14 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId }) => {
                 
                 <AddCardButton
                     onClick={() => {
+                        if (isEdit) {
+                            handleSaveEditedRetro({
+                                title: title,
+                                description: description,
+                            })
+                            clearAll();
+                        }
+                        console.log('adding????')
                         handleAddCard({
                             id: Math.floor(Math.random() * 100000),
                             catId: catId, 
@@ -112,7 +125,7 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId }) => {
                         })
                         clearAll()
                     }}
-                    text='add card'
+                    text={isEdit ? 'edit card' : 'add card'}
                 />
             </div>
         </Modal>
