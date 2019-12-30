@@ -2,6 +2,7 @@ import React from 'react'
 import { Modal, TextareaAutosize, Input } from '@material-ui/core';
 import { makeStyles, MuiThemeProvider } from '@material-ui/core/styles';
 import { AddCardButton } from './RetroButtons.js'
+import {EMOJIS} from './constants.js'
 
 const useModalStyle = makeStyles(theme => ({
     root: {
@@ -50,8 +51,6 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
     const [description, setDescription] = React.useState('')
     const [isValid, setIsValid] = React.useState(true)
 
-    const emojis = ['🍻', '😻', '💡', '🤔', '🔥', '🏁', '🦖', '⭐', '🌈']
-
     React.useEffect(() => {
         if (isEdit) {
             setTitle(retroEdit.title)
@@ -88,7 +87,6 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
                     width="50"
                     className={classes.title}
                     onChange={(e) => {
-                        console.log('e.target.value:', e.target.value)
                         setTitle(e.target.value)
                         validateTitle(e.target.value)
                     }}
@@ -103,7 +101,9 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
                         setDescription(e.target.value)
                     }}
                     value={description}
-
+                    style={{
+                        fontSize: 16
+                    }}
                 />
 
                 <div style={{
@@ -111,7 +111,7 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
                     alignContent: 'space-between', 
                     padding: '0.5rem 0.25rem'}
                 }>
-                    {emojis.map((emoji, index) => (
+                    {EMOJIS.map((emoji, index) => (
                     <span 
                         key={index}
                         style={{fontSize: 32, padding: '0.2rem', marginTop: '1rem'}} 
@@ -141,12 +141,14 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
                             return;
                         }
 
+                        const validatedDescription = description.length ? description : 'No description provided.'
+
 
                         handleAddCard({
                             id: Math.floor(Math.random() * 100000),
                             catId: catId, 
                             title: title,
-                            description: description,
+                            description: validatedDescription,
                         })
                         clearAll()
                     }}

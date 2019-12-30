@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import { useMediaQuery } from '@material-ui/core';
 
 const BACKGROUND_COLOR_MAP = {
     1: '#1d781d',
@@ -22,15 +23,20 @@ const BACKGROUND_COLOR_MAP = {
 const useStyles = makeStyles(theme =>({
     container: {
         display: 'flex',
+        // border: '3px solid black',
+        // minWidth: '50%'
     },
     card: {
         width: '100%',
         flexWrap: 'wrap',
-        flexGrow: 1,
         overflowWrap: 'break-word',
         margin: '1rem 0.5rem',
         boxShadow: theme.shadows[2],
-        // fontSize: theme.fontSize
+        flexBasis: 0,
+        minWidth: '200px',
+        // maxWidth: '33.33%',
+        flexShrink: 0,
+        flexGrow: 1,
     },
     // bullet: {
     //     display: 'inline-block',
@@ -44,11 +50,14 @@ const useStyles = makeStyles(theme =>({
         marginBottom: 1,
     },
     header: {
-        background: 'green',
+        // background: 'green',
+        // minWidth: '150px',
+        flexBasis: '150px',
         padding: '0.5rem',
         color: 'white',
         border: '1px solid red',
         overflowWrap: 'break-word',
+        fontSize: '10px'
     },
     content: {
         display:'flex',
@@ -69,7 +78,7 @@ const RetroCard = ({ id, title, description, catId, onDeleteRetro, onEditRetro }
             <CardHeader
                 title={title}
                 className={classes.header}
-                style={{backgroundColor: BACKGROUND_COLOR_MAP[catId]}}
+                style={{backgroundColor: BACKGROUND_COLOR_MAP[catId], fontSize: 10}}
             >
             <Typography className={classes.title} color="textPrimary" gutterBottom>
                 {title}
@@ -77,8 +86,8 @@ const RetroCard = ({ id, title, description, catId, onDeleteRetro, onEditRetro }
             </CardHeader>
             <CardContent className={classes.content}>
                 <Typography
-                    variant="body2"
-                    color="textSecondary"
+                    variant="body1"
+                    color="textPrimary"
                     component="p"
                 >
                     {description}

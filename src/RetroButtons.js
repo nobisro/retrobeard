@@ -15,6 +15,7 @@ const useStyles = makeStyles(theme => ({
 
 export const HeaderButton = ({ onClick, catId }) => {
     return (
+        <div className="header-button">
         <IconButton
             color='primary'
             size='small'
@@ -22,6 +23,7 @@ export const HeaderButton = ({ onClick, catId }) => {
         >
             <AddIcon />
         </IconButton>
+        </div>
     )
 }
 

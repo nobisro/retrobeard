@@ -6,13 +6,13 @@ import { Typography } from '@material-ui/core';
 const Header = ({title, catId, onClick, onDeleteRetro, onEditRetro, items = []}) => {
     return (
         <div className='header'>
-            {/* <Typography> */}
-                {title}
-            {/* </Typography> */}
-            <HeaderButton
-            onClick={onClick}
-            catId={catId}
-            />
+            <div className="header-title-container">
+                <span className="header-title">{title}</span>
+                <HeaderButton
+                onClick={onClick}
+                catId={catId}
+                />
+            </div>
             {items.map(item => {
                 return (
                     <RetroCard
