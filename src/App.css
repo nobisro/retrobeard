@@ -10,12 +10,19 @@
 
 .header {
   font-weight: bold;
-  padding: '100';
+  /* min-width: '200px'; */
+  /* max-width: '250px'; */
   flex-basis: 0;
   flex-grow: 1;
   flex-shrink: 0;
-  max-width: '250px';
-  /* border: 1px solid blue; */
+}
+
+.header-title-container {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+
 }
 
 .button {

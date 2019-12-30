@@ -36,7 +36,7 @@ export const DEFAULT_RETROS = {
         {
             id: 201,
             catId: 2,
-            title: 't',
+            title: 'test title',
             description: 'd'
         }
     ],
@@ -63,3 +63,5 @@ export const DEFAULT_RETROS = {
       }
     ],
   }
+
+export const EMOJIS = ['🍻', '😻', '💡', '🤔', '🔥', '🏁', '🦖', '⭐', '🌈']

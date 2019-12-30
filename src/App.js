@@ -39,7 +39,6 @@ const App = () => {
 
   const handleEditCard = (catId, retroId) => {
     const retro = itemsObject[catId].find(retro => retro.id === retroId)
-    // console.log(retro)
     setOpen(true)
     setRetroEdit(retro)
   }
@@ -54,7 +53,6 @@ const App = () => {
     const updatedItemsObject = Object.assign({}, itemsObject);
     if (updatedItemsObject[catId]) {
       updatedItemsObject[catId].forEach((retro, index) => {
-        //@TODO can we really just overwrite the existing retro, or do we need to delete it first?
         if (retro.id == id) {
           updatedItemsObject[catId][index] = editedRetro
         }
