@@ -12,28 +12,47 @@ const App = () => {
   const [open, setOpen] = useState(false)
   const [category, setCategory] = useState(-1);
   const [retroEdit, setRetroEdit] = useState({})
+  const [board, setBoard] = useState({})
 
-  React.useEffect(() => {
-    (async function fetchData() {
-      const response = await fetch('/api/retros')
-      const body = await response.json()
-      if (response.status !== 200) throw Error(body.message)
+  // React.useEffect(() => {
+  //   (async function fetchData() {
+  //     const response = await fetch('/api/retros')
+  //     const body = await response.json()
+  //     if (response.status !== 200) throw Error(body.message)
 
-      // ===============
-      body.forEach(retro => {
-        console.log('retro:', retro)
-        const updatedItemsObject = Object.assign({}, itemsObject);
-        if (!updatedItemsObject[retro.category]) {
-          updatedItemsObject[retro.category] = []
-        }
-        updatedItemsObject[retro.category].push(retro)
-        setItemsObject(updatedItemsObject);
-      })
-      // ===============
-    })()
+  //     // ===============
+  //     body.forEach(retro => {
+  //       console.log('retro:', retro)
+  //       const updatedItemsObject = Object.assign({}, itemsObject);
+  //       if (!updatedItemsObject[retro.category]) {
+  //         updatedItemsObject[retro.category] = []
+  //       }
+  //       updatedItemsObject[retro.category].push(retro)
+  //       setItemsObject(updatedItemsObject);
+  //     })
+  //     // ===============
+  //   })()
+  // }, [])
 
 
-  }, [])
+  // ========= Create Board Response Structure =========
+  //  {
+  //    "_id":"5e122678fecde60d461a3ad2",
+  //    "categories":[
+  //      {"_id":"5e122678fecde60d461a3ace","title":"test1"},
+  //      {"_id":"5e122678fecde60d461a3acf","title":"test2"},
+  //      {"_id":"5e122678fecde60d461a3ad0","title":"test3"},
+  //      {"_id":"5e122678fecde60d461a3ad1","title":"and four"}
+  //     ],
+  //     "__v":0
+  //   }
+
+
+  const handleCreateBoard = board => {
+    setBoard(board)
+  }
+
+
 
   const openModal = (catId) => {
     setOpen(true)
@@ -109,23 +128,25 @@ const App = () => {
 
   return (
     <>
-      <NavBar />
-      <div className='container'>
-        {DEFAULT_HEADERS.map(({ title, catId }) => {
+      <NavBar
+        handleCreateBoard={handleCreateBoard}
+      />
+      {!!Object.entries(board).length && (<div className='container'>
+        {board.categories.map(({ title, _id }) => {
           // @TODO factor Items list out of Header component, put here
           return (
             <Header
-              key={catId}
+              key={_id}
               title={title}
               onClick={openModal}
-              catId={catId}
-              items={itemsObject[catId]}
+              catId={_id}
+              items={itemsObject[_id]}
               onDeleteRetro={handleDeleteCard}
               onEditRetro={handleEditCard}
             />
           )
         })}
-      </div>
+      </div>)}
 
       <RetroModal
         open={open}

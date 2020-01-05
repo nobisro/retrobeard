@@ -1,10 +1,7 @@
-import React from 'react'
-import { Modal, TextareaAutosize, Input, TextField, Button } from '@material-ui/core';
-import { makeStyles, MuiThemeProvider } from '@material-ui/core/styles';
-import Icon from '@material-ui/core/Icon';
+import React, { useState } from 'react'
+import { Modal, TextField, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { HeaderButton, AddCardButton } from './RetroButtons'
-
-
 
 const useCreateBoardStyle = makeStyles(theme => ({
     root: {
@@ -23,7 +20,8 @@ const useCreateBoardStyle = makeStyles(theme => ({
         padding: theme.spacing(2, 4, 3),
     },
     title: {
-        width: '90%'
+        width: '90%',
+        paddingBottom: '1rem'
     },
     bold: {
         fontWeight: 'bold',
@@ -38,9 +36,46 @@ const getModalStyle = () => {
     };
 }
 
-const CreateBoardModal = ({ open }) => {
+const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModal }) => {
     const [modalStyle] = React.useState(getModalStyle)
     const classes = useCreateBoardStyle()
+
+    const [categories, setCategories] = useState({ 0: '' })
+
+    const addCategory = () => {
+        const next = Object.keys(categories).length
+        //@TODO open modal to convey to user the maximum number of categories (5)
+        setCategories({
+            ...categories,
+            [next]: ''
+        })
+    }
+
+    const handleChange = e => {
+        setCategories({
+            ...categories,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const handleSubmit = () => {
+        fetch('/api/create', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(categories)
+        }).then(async response => {
+            const board = await response.json();
+            console.log('board:', board)
+            closeCreateModal()
+            handleCreateBoard(board)
+            // close modal
+            // set categories
+        })
+    }
+
 
     return (
         <Modal
@@ -54,22 +89,27 @@ const CreateBoardModal = ({ open }) => {
                 }}>
                     <span className={classes.title}>Create your Retro Board
                     </span>
-                    <HeaderButton onClick={() => { }} />
+                    <HeaderButton onClick={addCategory} />
                 </div>
-
-                <TextField
-                    id="standard-full-width"
-                    label="Category"
-                    style={{ margin: 8 }}
-                    // placeholder="Placeholder"
-                    // fullWidth
-                    margin="normal"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
-                />
+                {Object.keys(categories).map(cat => {
+                    return (
+                        <TextField
+                            id="standard-full-width"
+                            label={`Category #${cat}`}
+                            style={{ margin: 8 }}
+                            margin="normal"
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                            name={cat}
+                            onChange={(e) => {
+                                handleChange(e)
+                            }}
+                        />
+                    )
+                })}
                 <AddCardButton
-                    onClick={() => { }}
+                    onClick={handleSubmit}
                     text='Create Board'
                 />
             </div>

@@ -17,11 +17,13 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const NavBar = () => {
-    const [createOpen, setCreateOpen] = useState(true)
+const NavBar = ({ handleCreateBoard }) => {
+    const [createOpen, setCreateOpen] = useState(false)
     const [loadOpen, setLoadOpen] = useState(false)
 
     const classes = useStyles();
+
+    const closeCreateModal = () => setCreateOpen(false);
 
     return (
         <div className={classes.root}>
@@ -35,7 +37,13 @@ const NavBar = () => {
                     }}>Load</Button>
                 </Toolbar>
             </AppBar>
-            <CreateBoardModal open={createOpen} />
+            <CreateBoardModal
+                open={createOpen}
+                handleCreateBoard={handleCreateBoard}
+                onBackdropClick={closeCreateModal}
+                onClose={closeCreateModal}
+                closeCreateModal={closeCreateModal}
+            />
         </div>
     );
 }

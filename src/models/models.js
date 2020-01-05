@@ -13,9 +13,8 @@ const RetroSchema = new mongoose.Schema({
 })
 
 const CategorySchema = new mongoose.Schema({
-    id: {
-        type: Number,
-        unique: true,
+    title: {
+        type: String
     },
     retros: {
         type: [RetroSchema],
@@ -23,11 +22,7 @@ const CategorySchema = new mongoose.Schema({
     }
 })
 
-const UserSchema = new mongoose.Schema({
-    id: {
-        type: Number,
-        unique: true,
-    },
+const BoardSchema = new mongoose.Schema({
     categories: {
         type: [CategorySchema],
         default: undefined
@@ -39,9 +34,9 @@ const Retro = mongoose.model('Retro', RetroSchema)
 
 const Category = mongoose.model('Category', CategorySchema)
 
-const User = mongoose.model('User', UserSchema)
+const Board = mongoose.model('User', BoardSchema)
 
 
 module.exports = {
-    Retro, Category, User
+    Retro, Category, Board
 }
