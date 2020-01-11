@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 
 const RetroSchema = new mongoose.Schema({
-    category: {
-        type: Number
+    board_id: {
+        type: String
+    },
+    category_id: {
+        type: String
     },
     title: {
         type: String
@@ -17,8 +20,7 @@ const CategorySchema = new mongoose.Schema({
         type: String
     },
     retros: {
-        type: [RetroSchema],
-        default: undefined
+        type: [RetroSchema]
     }
 })
 
@@ -28,6 +30,10 @@ const BoardSchema = new mongoose.Schema({
         default: undefined
     }
 })
+
+BoardSchema.statics.findAndModify = (query, sort, doc, options, callback) => {
+    return this.collection.findAndModify(query, sort, doc, options, callback);
+};
 
 
 const Retro = mongoose.model('Retro', RetroSchema)

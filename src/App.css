@@ -1,5 +1,4 @@
 .container {
-  border: 3px solid #0D4F8B;
   display: flex;
   justify-content: space-between;
   align-content: center;
@@ -10,15 +9,12 @@
 
 .header {
   font-weight: bold;
-  /* min-width: '200px'; */
-  /* max-width: '250px'; */
   flex-basis: 0;
   flex-grow: 1;
   flex-shrink: 0;
 }
 
 .header-title {
-  /* color: red; */
   font-size: 1.2rem;
 }
 

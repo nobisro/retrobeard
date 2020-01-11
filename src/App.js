@@ -1,67 +1,34 @@
-import React, { useState } from 'react';
+// @flow
+import React, { useState, useEffect, createContext } from 'react';
 import NavBar from './NavBar.js'
 import Header from './Header.js'
 import RetroModal from './RetroModal.js'
-import RetroCard from './RetroCard.js';
-import { HeaderButton } from './RetroButtons.js'
-import { DEFAULT_HEADERS, DEFAULT_RETROS } from './constants.js';
 import './App.css';
 
+export const BoardContext = createContext();
+
+
 const App = () => {
-  const [itemsObject, setItemsObject] = useState({})
   const [open, setOpen] = useState(false)
   const [category, setCategory] = useState(-1);
   const [retroEdit, setRetroEdit] = useState({})
   const [board, setBoard] = useState({})
 
-  // React.useEffect(() => {
-  //   (async function fetchData() {
-  //     const response = await fetch('/api/retros')
-  //     const body = await response.json()
-  //     if (response.status !== 200) throw Error(body.message)
-
-  //     // ===============
-  //     body.forEach(retro => {
-  //       console.log('retro:', retro)
-  //       const updatedItemsObject = Object.assign({}, itemsObject);
-  //       if (!updatedItemsObject[retro.category]) {
-  //         updatedItemsObject[retro.category] = []
-  //       }
-  //       updatedItemsObject[retro.category].push(retro)
-  //       setItemsObject(updatedItemsObject);
-  //     })
-  //     // ===============
-  //   })()
-  // }, [])
-
-
-  // ========= Create Board Response Structure =========
-  //  {
-  //    "_id":"5e122678fecde60d461a3ad2",
-  //    "categories":[
-  //      {"_id":"5e122678fecde60d461a3ace","title":"test1"},
-  //      {"_id":"5e122678fecde60d461a3acf","title":"test2"},
-  //      {"_id":"5e122678fecde60d461a3ad0","title":"test3"},
-  //      {"_id":"5e122678fecde60d461a3ad1","title":"and four"}
-  //     ],
-  //     "__v":0
-  //   }
-
+  useEffect(() => {
+    console.log('updated board effect:', board)
+  }, [board])
 
   const handleCreateBoard = board => {
     setBoard(board)
   }
 
-
-
-  const openModal = (catId) => {
+  const openModal = (catId: string) => {
     setOpen(true)
     setCategory(catId)
   }
   const closeModal = () => setOpen(false)
 
   const handleAddCard = (retro) => {
-    // ========================
     fetch('/api/save', {
       method: 'POST',
       headers: {
@@ -70,77 +37,72 @@ const App = () => {
       },
       body: JSON.stringify(retro)
     }).then(async response => {
-      const serverRetro = await response.json();
-      const updatedItemsObject = Object.assign({}, itemsObject);
-      if (!updatedItemsObject[serverRetro.catId]) {
-        updatedItemsObject[serverRetro.catId] = []
-      }
-      updatedItemsObject[serverRetro.catId].push(serverRetro)
-      setItemsObject(updatedItemsObject);
-      console.log('itemsObject:', itemsObject)
+      const board = await response.json()
+      setBoard(board)
       closeModal()
     })
-      .catch(() => {
+      .catch((e) => {
+        console.log('e', e)
         closeModal()
       })
-
-    // ========================
-
   }
 
-  const handleDeleteCard = (catId, retroId) => {
-    const updatedItemsObject = Object.assign({}, itemsObject);
-
-    if (updatedItemsObject[catId]) {
-      updatedItemsObject[catId] = updatedItemsObject[catId].filter((retro) => retro.id !== retroId)
-      setItemsObject(updatedItemsObject)
-    }
+  const handleDeleteCard = (boardId, catId, retroId) => {
+    fetch('/api/delete', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 'board_id': boardId, 'category_id': catId, '_id': retroId })
+    }).then(async res => {
+      const board = await res.json();
+      setBoard(board)
+    })
   }
 
   const handleEditCard = (catId, retroId) => {
-    const retro = itemsObject[catId].find(retro => retro.id === retroId)
+    const retro = board.categories.find(cat => cat._id === catId).retros.find(r => r._id === retroId)
     setOpen(true)
     setRetroEdit(retro)
   }
 
   const handleSaveEditedRetro = ({ title, description }) => {
-    const { id, catId } = retroEdit
-
     const editedRetro = Object.assign({}, retroEdit)
     editedRetro.title = title;
     editedRetro.description = description;
 
-    const updatedItemsObject = Object.assign({}, itemsObject);
-    if (updatedItemsObject[catId]) {
-      updatedItemsObject[catId].forEach((retro, index) => {
-        if (retro.id == id) {
-          updatedItemsObject[catId][index] = editedRetro
-        }
-      })
-      console.log('editedRetro:', editedRetro)
-      setItemsObject(updatedItemsObject)
-      setRetroEdit({})
+    fetch('/api/edit', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(editedRetro)
+    }).then(async res => {
+      const editedBoard = await res.json();
+      setBoard(editedBoard)
       closeModal()
-    }
-
+      setRetroEdit({})
+    })
   }
 
-
   return (
-    <>
+    <BoardContext.Provider value={board._id}>
       <NavBar
         handleCreateBoard={handleCreateBoard}
+        setBoard={setBoard}
       />
       {!!Object.entries(board).length && (<div className='container'>
-        {board.categories.map(({ title, _id }) => {
-          // @TODO factor Items list out of Header component, put here
+        {board.categories.map((category, index) => {
           return (
             <Header
-              key={_id}
-              title={title}
+              catId={category._id}
+              key={category._id}
+              catIndex={index}
+              title={category.title}
               onClick={openModal}
-              catId={_id}
-              items={itemsObject[_id]}
+              items={category.retros}
               onDeleteRetro={handleDeleteCard}
               onEditRetro={handleEditCard}
             />
@@ -153,13 +115,11 @@ const App = () => {
         closeModal={closeModal}
         handleAddCard={handleAddCard}
         catId={category}
-
         isEdit={!!Object.keys(retroEdit).length}
         handleSaveEditedRetro={handleSaveEditedRetro}
         retroEdit={retroEdit}
       />
-
-    </>
+    </BoardContext.Provider>
   )
 
 };

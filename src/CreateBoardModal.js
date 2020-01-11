@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Modal, TextField, Button } from '@material-ui/core';
+import { Modal, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { HeaderButton, AddCardButton } from './RetroButtons'
 
@@ -39,16 +39,17 @@ const getModalStyle = () => {
 const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModal }) => {
     const [modalStyle] = React.useState(getModalStyle)
     const classes = useCreateBoardStyle()
-
     const [categories, setCategories] = useState({ 0: '' })
+    const MAX_CATEGORIES_NUM = 5;
 
     const addCategory = () => {
         const next = Object.keys(categories).length
-        //@TODO open modal to convey to user the maximum number of categories (5)
-        setCategories({
-            ...categories,
-            [next]: ''
-        })
+        if (next <= MAX_CATEGORIES_NUM) {
+            setCategories({
+                ...categories,
+                [next]: ''
+            })
+        }
     }
 
     const handleChange = e => {
@@ -68,11 +69,8 @@ const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModal }) => {
             body: JSON.stringify(categories)
         }).then(async response => {
             const board = await response.json();
-            console.log('board:', board)
             closeCreateModal()
             handleCreateBoard(board)
-            // close modal
-            // set categories
         })
     }
 

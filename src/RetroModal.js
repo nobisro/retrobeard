@@ -1,8 +1,9 @@
-import React from 'react'
-import { Modal, TextareaAutosize, Input } from '@material-ui/core';
-import { makeStyles, MuiThemeProvider } from '@material-ui/core/styles';
+import React, { useContext } from 'react'
+import { BoardContext } from './App.js'
+import { Modal, Input } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { AddCardButton } from './RetroButtons.js'
-import {EMOJIS} from './constants.js'
+import { EMOJIS } from './constants.js'
 
 const useModalStyle = makeStyles(theme => ({
     root: {
@@ -56,7 +57,7 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
             setTitle(retroEdit.title)
             setDescription(retroEdit.description)
         }
-    }, [retroEdit])
+    }, [isEdit, retroEdit])
 
     const clearAll = () => {
         setTitle('')
@@ -70,6 +71,8 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
             setIsValid(false)
         }
     }
+
+    const boardID = useContext(BoardContext);
 
     return (
         <Modal
@@ -107,23 +110,24 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
                 />
 
                 <div style={{
-                    display: 'flex', 
-                    alignContent: 'space-between', 
-                    padding: '0.5rem 0.25rem'}
+                    display: 'flex',
+                    alignContent: 'space-between',
+                    padding: '0.5rem 0.25rem'
+                }
                 }>
                     {EMOJIS.map((emoji, index) => (
-                    <span 
-                        key={index}
-                        style={{fontSize: 32, padding: '0.2rem', marginTop: '1rem'}} 
-                        onClick={()=>{
-                            setDescription(description + emoji)
-                        }}
-                    >
-                    {emoji}
-                    </span>))}
+                        <span
+                            key={index}
+                            style={{ fontSize: 32, padding: '0.2rem', marginTop: '1rem' }}
+                            onClick={() => {
+                                setDescription(description + emoji)
+                            }}
+                        >
+                            {emoji}
+                        </span>))}
                 </div>
 
-                
+
                 <AddCardButton
                     onClick={() => {
                         validateTitle(title);
@@ -145,8 +149,8 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
 
 
                         handleAddCard({
-                            id: Math.floor(Math.random() * 100000),
-                            catId: catId, 
+                            board_id: boardID,
+                            category_id: catId,
                             title: title,
                             description: validatedDescription,
                         })

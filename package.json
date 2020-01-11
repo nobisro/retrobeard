@@ -27,7 +27,8 @@
     "eject": "react-scripts eject",
     "server": "nodemon server.js",
     "client": "yarn start",
-    "dev": "concurrently --kill-others-on-fai \"yarn server\" \"yarn client\""
+    "dev": "concurrently --kill-others-on-fai \"yarn server\" \"yarn client\"",
+    "flow": "flow"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -49,7 +50,9 @@
     "@babel/core": "^7.7.7",
     "@babel/node": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
+    "@babel/preset-flow": "^7.7.4",
     "concurrently": "5.0.2",
+    "flow-bin": "^0.115.0",
     "prettier": "^1.19.1"
   }
 }

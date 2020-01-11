@@ -1,9 +1,10 @@
 import React from 'react';
-import RetroCard from './RetroCard.js'
+import { RetroCardList } from './RetroCard.js'
 import { HeaderButton } from './RetroButtons.js';
 import { Typography } from '@material-ui/core';
 
-const Header = ({ title, catId, onClick, onDeleteRetro, onEditRetro, items = [] }) => {
+const Header = (props) => {
+    const { title, catId, catIndex, onClick, onDeleteRetro, onEditRetro, items = [] } = props
     return (
         <div className='header'>
             <div className="header-title-container">
@@ -17,19 +18,12 @@ const Header = ({ title, catId, onClick, onDeleteRetro, onEditRetro, items = [] 
                     catId={catId}
                 />
             </div>
-            {items.map(item => {
-                return (
-                    <RetroCard
-                        id={item.id}
-                        key={item.id}
-                        title={item.title}
-                        description={item.description}
-                        catId={catId}
-                        onDeleteRetro={onDeleteRetro}
-                        onEditRetro={onEditRetro}
-                    />
-                )
-            })}
+            <RetroCardList
+                items={items}
+                onDeleteRetro={onDeleteRetro}
+                onEditRetro={onEditRetro}
+                catIndex={catIndex}
+            />
         </div>
     )
 }
