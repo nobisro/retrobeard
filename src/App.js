@@ -1,4 +1,3 @@
-// @flow
 import React, { useState, useEffect, createContext } from 'react';
 import NavBar from './NavBar.js'
 import Header from './Header.js'
@@ -8,7 +7,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
   useParams
 } from "react-router-dom";
 import './App.css';
@@ -20,20 +18,11 @@ const ChildApp = ({
   handleDeleteCard,
   handleEditCard,
   handleCreateBoard,
-  board,
-  open,
-  closeModal,
-  handleAddCard,
-  catId,
-  isEdit,
-  handleSaveEditedRetro,
-  retroEdit
+  board
 }) => {
   const { id } = useParams();
-  // const [board, setBoard] = useState({})
 
   useEffect(() => {
-    console.log('running effect')
     fetchData('/api/load', 'POST', { 'board_id': id })
       .then(async res => {
         const b = await res.json();
@@ -41,7 +30,7 @@ const ChildApp = ({
       }).catch(e => {
         throw e;
       })
-  }, [])
+  }, [id, handleCreateBoard])
   return !!Object.entries(board).length && (
     <div className='container'>
       {board.categories.map((category, index) => {
@@ -137,15 +126,6 @@ const App = () => {
               handleEditCard={handleEditCard}
               handleCreateBoard={handleCreateBoard}
               board={board}
-
-              //RetroModal
-              open={open}
-              closeModal={closeModal}
-              handleAddCard={handleAddCard}
-              catId={category}
-              isEdit={!!Object.keys(retroEdit).length}
-              handleSaveEditedRetro={handleSaveEditedRetro}
-              retroEdit={retroEdit}
             />
           </Route>
 
@@ -160,29 +140,8 @@ const App = () => {
           handleSaveEditedRetro={handleSaveEditedRetro}
           retroEdit={retroEdit}
         />
-
       </BoardContext.Provider>
     </Router>
   )
-
 };
 export default App
-
-
-
-// !!Object.entries(board).length && (<div className='container'>
-// {board.categories.map((category, index) => {
-//   return (
-//     <Header
-//       catId={category._id}
-//       key={category._id}
-//       catIndex={index}
-//       title={category.title}
-//       onClick={openModal}
-//       items={category.retros}
-//       onDeleteRetro={handleDeleteCard}
-//       onEditRetro={handleEditCard}
-//     />
-//   )
-// })}
-// </div>)

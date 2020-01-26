@@ -15,9 +15,6 @@ const useStyles = makeStyles(theme => ({
     toolbar: {
         minHeight: '0px'
     },
-    appBar: {
-        // border: '2px solid yellow'
-    },
     top: {
         display: 'flex',
         justifyContent: 'flex-start',
@@ -32,13 +29,8 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
         display: 'flex',
     },
-    create: {
-        // paddingRight: '2rem'
-    },
     buttonGroup: {
-        // border: '4px solid red'
         borderRightColor: 'white',
-
     },
     menuButton: {
         marginRight: theme.spacing(1),
@@ -59,52 +51,30 @@ const useStyles = makeStyles(theme => ({
         flexShrink: 1,
         flexGrow: 1
     },
-    loadText: {
-        paddingLeft: '1rem',
-        width: 250
-    },
-    board_id: {
-        float: 'right',
-        paddingLeft: '2rem'
-    },
-
-
-    createV2: {
-        // border: '1px solid white',
-        boxShadow: '0 0 1px',
-        margin: '0.25rem',
-        color: 'white',
-        // borderRightColor: 'white',
-        // borderRadius: theme.shape.borderRadius,
-        backgroundColor: 'inherit',
-        // '&:hover': {
-        //     backgroundColor: fade(theme.palette.common.white, 0.25),
-        // },
-    }
 }));
 
 const NavBar = ({ handleCreateBoard, setBoard }) => {
     const [createOpen, setCreateOpen] = useState(false)
-    const [boardIdDisplay, setBoardIdDisplay] = useState('')
+    // const [boardIdDisplay, setBoardIdDisplay] = useState('')
     const board_id = React.useContext(BoardContext)
 
     const classes = useStyles();
 
     const closeCreateModal = () => setCreateOpen(false);
 
-    const handleLoadClick = () => {
-        try {
-            fetchData('/api/load', 'POST', { 'board_id': boardIdDisplay })
-                .then(async res => {
-                    const board = await res.json();
-                    setBoard(board)
-                }).catch(e => {
-                    throw e;
-                })
-        } catch (e) {
-            console.log('error loading board:', e.toString())
-        }
-    }
+    // const handleLoadClick = () => {
+    //     try {
+    //         fetchData('/api/load', 'POST', { 'board_id': boardIdDisplay })
+    //             .then(async res => {
+    //                 const board = await res.json();
+    //                 setBoard(board)
+    //             }).catch(e => {
+    //                 throw e;
+    //             })
+    //     } catch (e) {
+    //         console.log('error loading board:', e.toString())
+    //     }
+    // }
 
     return (
         <>
@@ -112,7 +82,7 @@ const NavBar = ({ handleCreateBoard, setBoard }) => {
                 <span>Retrobeard</span>
             </div>
             <div className={classes.root}>
-                <AppBar className={classes.appBar} position="static">
+                <AppBar position="static">
                     <Toolbar className={classes.toolbar}>
                         <ButtonGroup className={classes.buttonGroup} size="small" aria-label="small outlined button group">
                             {/* <Button className={classes.create} color="inherit" onClick={() => {
@@ -122,13 +92,11 @@ const NavBar = ({ handleCreateBoard, setBoard }) => {
                             {/* <div className={classes.load}> */}
                             {/* <Button className={classes.create} color="inherit" onClick={handleLoadClick}>Load</Button> */}
                             <button
-                                // className={classes.createV2}
                                 style={{
                                     boxShadow: '0 0 1px',
                                     margin: '0.25rem',
                                     color: 'white',
                                     borderRightColor: 'white',
-                                    // borderRadius: theme.shape.borderRadius,
                                     backgroundColor: 'inherit',
                                 }}
                                 onClick={() => {
@@ -137,12 +105,7 @@ const NavBar = ({ handleCreateBoard, setBoard }) => {
                             >
                                 CREATE
                             </button>
-                            {/* <TextField className={classes.loadText} edge="start" onChange={e => {
-                                setBoardIdDisplay(e.target.value)
-                            }}></TextField> */}
-                            {/* </div> */}
                         </ButtonGroup>
-                        {/* <Typography variant="subtitle1" color="textPrimary" className={classes.board_id}>{`Board ID: ${board_id || ''}`}</Typography> */}
                     </Toolbar>
                 </AppBar>
                 <CreateBoardModal

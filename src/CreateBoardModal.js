@@ -71,7 +71,6 @@ const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModa, onBackdrop
             body: JSON.stringify(categories)
         }).then(async response => {
             const id = await response.json();
-            console.log('created ID:', id)
             window.location.replace(`/b/${id}`)
         })
             .catch(e => {
