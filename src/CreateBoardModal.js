@@ -68,9 +68,20 @@ const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModal }) => {
             },
             body: JSON.stringify(categories)
         }).then(async response => {
-            const board = await response.json();
-            closeCreateModal()
-            handleCreateBoard(board)
+            const id = await response.json();
+            window.location.replace(`/b/${id}`)
+            // fetch(`/b/${id}`, {
+            //     method: 'GET',
+            //     headers: {
+            //         'Accept': 'application/json',
+            //         'Content-Type': 'application/json',
+            //     }
+            // }).then(async res => {
+            //     const b = await res.json()
+            //     console.log('b:', b)
+            //     closeCreateModal()
+            //     handleCreateBoard(b)
+            // })
         })
     }
 

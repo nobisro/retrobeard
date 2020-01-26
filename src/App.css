@@ -4,7 +4,8 @@
   align-content: center;
   flex-wrap: wrap;
   font-size: 1.4rem;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color:  #d5d5f4;
 }
 
 .header {
