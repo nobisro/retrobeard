@@ -14,8 +14,8 @@ const useModalStyle = makeStyles(theme => ({
         display: 'flex',
         flexDirection: 'column',
         position: 'absolute',
-        width: 350,
-        height: 500,
+        width: 300,
+        height: 400,
         backgroundColor: theme.palette.background.paper,
         border: '2px solid #000',
         boxShadow: theme.shadows[8],
@@ -28,8 +28,8 @@ const useModalStyle = makeStyles(theme => ({
         width: '95%',
         maxWidth: '95%',
         minWidth: '95%',
-        minHeight: '8rem',
-        maxHeight: '8rem',
+        minHeight: '7rem',
+        maxHeight: '7rem',
     },
     bold: {
         fontWeight: 'bold',
@@ -118,7 +118,7 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
                     {EMOJIS.map((emoji, index) => (
                         <span
                             key={index}
-                            style={{ fontSize: 32, padding: '0.2rem', marginTop: '1rem' }}
+                            style={{ fontSize: 26, padding: '0.2rem', marginTop: '1rem' }}
                             onClick={() => {
                                 setDescription(description + emoji)
                             }}
@@ -127,37 +127,43 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
                         </span>))}
                 </div>
 
+                <div style={{
+                    marginTop: 'auto'
+                }}>
+                    <AddCardButton
+                        onClick={() => {
+                            validateTitle(title);
 
-                <AddCardButton
-                    onClick={() => {
-                        validateTitle(title);
+                            if (!isValid) {
+                                console.log('not valid')
+                                return;
+                            }
 
-                        if (!isValid) {
-                            return;
-                        }
+                            if (isEdit && isValid) {
+                                handleSaveEditedRetro({
+                                    title: title,
+                                    description: description,
+                                })
+                                clearAll();
+                                return;
+                            }
 
-                        if (isEdit && isValid) {
-                            handleSaveEditedRetro({
+                            const validatedDescription = description.length ? description : 'No description provided.'
+
+                            console.log(boardID, catId, title, validatedDescription)
+
+                            handleAddCard({
+                                board_id: boardID,
+                                category_id: catId,
                                 title: title,
-                                description: description,
+                                description: validatedDescription,
                             })
-                            clearAll();
-                            return;
-                        }
+                            clearAll()
+                        }}
+                        text={isEdit ? 'edit card' : 'add card'}
+                    />
 
-                        const validatedDescription = description.length ? description : 'No description provided.'
-
-
-                        handleAddCard({
-                            board_id: boardID,
-                            category_id: catId,
-                            title: title,
-                            description: validatedDescription,
-                        })
-                        clearAll()
-                    }}
-                    text={isEdit ? 'edit card' : 'add card'}
-                />
+                </div>
             </div>
         </Modal>
     )

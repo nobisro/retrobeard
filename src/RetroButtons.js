@@ -6,23 +6,23 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
     btn: {
-        background: 'green',
+        // background: 'green',
         borderRadius: 3,
-        alignItems: 'flex-end',
-        marginTop: '7rem'
+        // alignItems: 'flex-end',
+        // marginTop: '7rem'
     },
 }))
 
 export const HeaderButton = ({ onClick, catId }) => {
     return (
         <div className="header-button">
-        <IconButton
-            color='primary'
-            size='small'
-            onClick={() => onClick(catId)}
-        >
-            <AddIcon />
-        </IconButton>
+            <IconButton
+                color='primary'
+                size='small'
+                onClick={() => onClick(catId)}
+            >
+                <AddIcon />
+            </IconButton>
         </div>
     )
 }

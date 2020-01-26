@@ -3,7 +3,7 @@ const express = require('express');
 // const cors = require('cors')
 const bodyParser = require('body-parser')
 // const boardRouter = require('./board')
-const { models, connectDb } = require('./src/models/index')
+const { models, connectDb } = require('../src/models/index')
 const ObjectId = require('mongoose').Types.ObjectId;
 const { Retro, Category, Board } = models;
 const app = express();
@@ -12,22 +12,20 @@ const port = process.env.PORT || 1337;
 // app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'dist')))
+app.use(express.static(path.join(__dirname, '/../dist')))
 // app.use('/b*', boardRouter)
 
 // app.get('*', (req, res) => {
 //     res.sendFile('./dist.index.html')
 // })
 
-app.all('/b/*', (req, res) => {
+app.get('/*', (req, res) => {
     // res.sendFile(path.join(__dirname, '/../dist/index.html'), err => {
     //     if (err) {
     //         res.status(500).send(err)
     //     }
     // })
-    // res.sendFile('index.html', { root: __dirname + '/../dist' })
-    console.log('req received', req.originalUrl)
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'))
+    res.sendFile('index.html', { root: __dirname + '/../dist' })
 })
 
 
@@ -81,6 +79,11 @@ app.post('/api/edit', async (req, res) => {
 
 app.post('/api/save', async (req, res) => {
     const { board_id, category_id, title, description } = req.body
+    console.log('boardid:', board_id)
+    console.log('category_id:', category_id)
+    console.log('title:', title)
+    console.log('description:', description)
+
     if (board_id && category_id && title && description) {
         const retro = new Retro({
             board_id: board_id,
@@ -93,6 +96,7 @@ app.post('/api/save', async (req, res) => {
         board.categories.find(category => category._id == category_id).retros.push(retro)
         try {
             const saved = await board.save();
+            console.log('saved:', saved)
             res.send(saved)
         } catch (e) {
             console.log('error saving', JSON.stringify(e))
@@ -139,7 +143,8 @@ app.post('/api/create', async (req, res) => {
         const created = await board.save();
         const id = created._id;
         console.log('created', id)
-        res.send(JSON.stringify(id))
+        // res.redirect(`/b/${id}`)
+        res.send({ board_id: id })
     } catch (e) {
         console.log('error creating:', JSON.stringify(e))
     }
@@ -148,7 +153,7 @@ app.post('/api/create', async (req, res) => {
 
 app.post('/api/load', async (req, res) => {
     const { board_id } = req.body;
-    console.log('req received: ', board_id);
+    console.log('req received');
     try {
         if (board_id) {
             const board = await Board.findOne({ "_id": ObjectId(board_id) })

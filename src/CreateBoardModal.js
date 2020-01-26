@@ -33,10 +33,12 @@ const getModalStyle = () => {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
+        display: 'flex',
+        // alignItems: 'center'
     };
 }
 
-const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModal }) => {
+const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModa, onBackdropClick }) => {
     const [modalStyle] = React.useState(getModalStyle)
     const classes = useCreateBoardStyle()
     const [categories, setCategories] = useState({ 0: '' })
@@ -44,7 +46,7 @@ const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModal }) => {
 
     const addCategory = () => {
         const next = Object.keys(categories).length
-        if (next <= MAX_CATEGORIES_NUM) {
+        if (next < MAX_CATEGORIES_NUM) {
             setCategories({
                 ...categories,
                 [next]: ''
@@ -68,24 +70,29 @@ const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModal }) => {
             },
             body: JSON.stringify(categories)
         }).then(async response => {
-            const board = await response.json();
-            closeCreateModal()
-            handleCreateBoard(board)
+            const id = await response.json();
+            console.log('created ID:', id)
+            window.location.replace(`/b/${id}`)
         })
+            .catch(e => {
+                console.log(e.toString())
+            })
     }
 
 
     return (
         <Modal
             open={open}
+            onBackdropClick={onBackdropClick}
+
         >
             <div style={modalStyle} className={classes.paper}>
                 <div style={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center'
+                    justifyContent: 'space-between'
                 }}>
-                    <span className={classes.title}>Create your Retro Board
+                    <span className={classes.title}>Create your Retro Beard
                     </span>
                     <HeaderButton onClick={addCategory} />
                 </div>
@@ -106,10 +113,14 @@ const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModal }) => {
                         />
                     )
                 })}
-                <AddCardButton
-                    onClick={handleSubmit}
-                    text='Create Board'
-                />
+                <div style={{
+                    marginTop: 'auto'
+                }}>
+                    <AddCardButton
+                        onClick={handleSubmit}
+                        text='Create Board'
+                    />
+                </div>
             </div>
         </Modal>
     )
