@@ -25,9 +25,8 @@
     "react-scripts": "3.3.0"
   },
   "scripts": {
-    "start": "webpack-dev-server --config ./webpack.config.js --mode development",
-    "build": "webpack --mode=production",
-    "test": "react-scripts test",
+    "test": "webpack-dev-server --config ./webpack.config.js --mode development",
+    "start": "webpack --mode=production && node server.js",
     "eject": "react-scripts eject",
     "server": "nodemon server.js",
     "client": "yarn start",
@@ -72,5 +71,8 @@
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10",
     "webpack-dev-server": "^3.10.1"
+  },
+  "engines": {
+    "node": "10.x"
   }
 }
