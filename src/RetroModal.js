@@ -128,8 +128,8 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
                 </div>
 
                 <div style={{
-                    // display: 'flex',
-                    // justifyContent: 'center',
+                    display: 'flex',
+                    justifyContent: 'center',
                     marginTop: 'auto'
                 }}>
                     <AddCardButton

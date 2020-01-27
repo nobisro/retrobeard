@@ -51,12 +51,9 @@ const useStyles = makeStyles(theme => ({
 
 const NavBar = ({ handleCreateBoard, setBoard }) => {
     const [createOpen, setCreateOpen] = useState(false)
-
     const classes = useStyles();
 
     const closeCreateModal = () => setCreateOpen(false);
-
-
 
     return (
         <>

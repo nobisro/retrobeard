@@ -3,7 +3,6 @@ import { Modal, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { HeaderButton, AddCardButton } from './RetroButtons'
 
-
 const useCreateBoardStyle = makeStyles(theme => ({
     root: {
         color: 'black',
@@ -77,7 +76,6 @@ const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModa, onBackdrop
                 console.log(e.toString())
             })
     }
-
 
     return (
         <Modal

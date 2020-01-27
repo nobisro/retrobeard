@@ -53,7 +53,6 @@ const ChildApp = ({
   )
 }
 
-
 const App = () => {
   const [open, setOpen] = useState(false)
   const [category, setCategory] = useState(-1);
@@ -128,9 +127,7 @@ const App = () => {
               board={board}
             />
           </Route>
-
         </Switch>
-
         <RetroModal
           open={open}
           closeModal={closeModal}
