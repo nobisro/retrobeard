@@ -7,7 +7,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-repeat: no-repeat;
   background-size: 100%;
+<<<<<<< HEAD
   background-color:  #d5d5f4;
+=======
+>>>>>>> 61e37d2235bd3d0741a927bd98cfc24385d365fc
 }
 
 code {

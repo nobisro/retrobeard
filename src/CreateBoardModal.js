@@ -71,6 +71,21 @@ const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModa, onBackdrop
         }).then(async response => {
             const id = await response.json();
             window.location.replace(`/b/${id}`)
+<<<<<<< HEAD
+=======
+            // fetch(`/b/${id}`, {
+            //     method: 'GET',
+            //     headers: {
+            //         'Accept': 'application/json',
+            //         'Content-Type': 'application/json',
+            //     }
+            // }).then(async res => {
+            //     const b = await res.json()
+            //     console.log('b:', b)
+            //     closeCreateModal()
+            //     handleCreateBoard(b)
+            // })
+>>>>>>> 61e37d2235bd3d0741a927bd98cfc24385d365fc
         })
             .catch(e => {
                 console.log(e.toString())

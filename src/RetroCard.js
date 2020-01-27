@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -28,6 +28,7 @@ const useStyles = makeStyles(theme => {
         title: {
             fontSize: theme.typography.h6.fontSize,
 
+<<<<<<< HEAD
         },
         pos: {
             marginBottom: 1,
@@ -47,6 +48,54 @@ const useStyles = makeStyles(theme => {
             fontSize: '72pt',
             minHeight: '65px',
 
+=======
+const theme = createMuiTheme({
+    typography: {
+        fontSize: '2.25rem',
+        lineHeight: 0
+    }
+})
+
+
+const useStyles = makeStyles(theme => {
+    console.log('theme:', theme)
+    return ({
+        container: {
+            display: 'flex',
+        },
+        card: {
+            width: '100%',
+            flexWrap: 'wrap',
+            overflowWrap: 'break-word',
+            margin: '1rem 0.5rem',
+            boxShadow: theme.shadows[2],
+            flexBasis: 0,
+            minWidth: '175px',
+            flexShrink: 0,
+            flexGrow: 1,
+        },
+        title: {
+            fontSize: theme.typography.h6.fontSize,
+
+        },
+        pos: {
+            marginBottom: 1,
+        },
+        header: {
+            flexBasis: '150px',
+            padding: '0.5rem',
+            overflowWrap: 'break-word',
+            fontSize: '30px'
+        },
+        content: {
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            overflowWrap: 'break-word',
+            fontSize: '72pt',
+            minHeight: '100px',
+
+>>>>>>> 61e37d2235bd3d0741a927bd98cfc24385d365fc
         }
     })
 });
@@ -59,6 +108,7 @@ const RetroCard = ({ id, title, description, catId, catIndex, onDeleteRetro, onE
             <div className={classes.container}>
                 <Card className={classes.card}>
                     <CardHeader
+<<<<<<< HEAD
                         title={<span style={{
                             fontSize: '1.25rem',
                             lineHeigth: '1'
@@ -66,6 +116,18 @@ const RetroCard = ({ id, title, description, catId, catIndex, onDeleteRetro, onE
                         className={classes.header}
                         style={{ backgroundColor: BACKGROUND_COLOR_MAP[catIndex], fontSize: 10 }}
                     >
+=======
+                        title={title}
+                        className={classes.header}
+                        style={{ backgroundColor: BACKGROUND_COLOR_MAP[catIndex], fontSize: 10 }}
+                    >
+                        <ThemeProvider theme={theme}>
+                            <Typography className={classes.title} color="textPrimary" gutterBottom>
+                                {title}
+                            </Typography>
+                        </ThemeProvider>
+
+>>>>>>> 61e37d2235bd3d0741a927bd98cfc24385d365fc
                     </CardHeader>
                     <CardContent className={classes.content}>
                         <Typography
@@ -81,6 +143,7 @@ const RetroCard = ({ id, title, description, catId, catIndex, onDeleteRetro, onE
                             display: 'flex',
                             justifyContent: 'space-around',
                             paddingBottom: '0.5rem',
+<<<<<<< HEAD
                             fontSize: '.75rem',
                         }}
                     >
@@ -88,15 +151,25 @@ const RetroCard = ({ id, title, description, catId, catIndex, onDeleteRetro, onE
                             display: 'flex',
                             alignItems: 'center'
                         }} onClick={() => {
+=======
+                            fontSize: '1rem',
+                        }}
+                    >
+                        <span onClick={() => {
+>>>>>>> 61e37d2235bd3d0741a927bd98cfc24385d365fc
                             onEditRetro(catId, id)
                         }}>
                             <EditIcon />
                             Edit
                 </span>
+<<<<<<< HEAD
                         <span style={{
                             display: 'flex',
                             alignItems: 'center'
                         }} onClick={() => {
+=======
+                        <span onClick={() => {
+>>>>>>> 61e37d2235bd3d0741a927bd98cfc24385d365fc
                             onDeleteRetro(board_id, catId, id)
                         }}>
                             <DeleteIcon />

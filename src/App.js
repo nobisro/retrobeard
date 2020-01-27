@@ -7,12 +7,17 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
+<<<<<<< HEAD
+=======
+  Link,
+>>>>>>> 61e37d2235bd3d0741a927bd98cfc24385d365fc
   useParams
 } from "react-router-dom";
 import './App.css';
 
 export const BoardContext = createContext();
 
+<<<<<<< HEAD
 const ChildApp = ({
   openModal,
   handleDeleteCard,
@@ -21,20 +26,35 @@ const ChildApp = ({
   board
 }) => {
   const { id } = useParams();
+=======
+const ChildApp = ({ openModal, handleDeleteCard, handleEditCard }) => {
+  const { id } = useParams();
+  const [board, setBoard] = useState({})
+>>>>>>> 61e37d2235bd3d0741a927bd98cfc24385d365fc
 
   useEffect(() => {
     fetchData('/api/load', 'POST', { 'board_id': id })
       .then(async res => {
+<<<<<<< HEAD
         const b = await res.json();
         handleCreateBoard(b)
       }).catch(e => {
         throw e;
       })
   }, [id, handleCreateBoard])
+=======
+        const board = await res.json();
+        setBoard(board)
+      }).catch(e => {
+        throw e;
+      })
+  }, [])
+>>>>>>> 61e37d2235bd3d0741a927bd98cfc24385d365fc
   return !!Object.entries(board).length && (
     <div className='container'>
       {board.categories.map((category, index) => {
         return (
+<<<<<<< HEAD
           <>
             <Header
               key={index}
@@ -47,11 +67,27 @@ const ChildApp = ({
               onEditRetro={handleEditCard}
             />
           </>
+=======
+          <Header
+            catId={category._id}
+            key={category._id}
+            catIndex={index}
+            title={category.title}
+            onClick={openModal}
+            items={category.retros}
+            onDeleteRetro={handleDeleteCard}
+            onEditRetro={handleEditCard}
+          />
+>>>>>>> 61e37d2235bd3d0741a927bd98cfc24385d365fc
         )
       })}
     </div>
   )
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 61e37d2235bd3d0741a927bd98cfc24385d365fc
 
 const App = () => {
   const [open, setOpen] = useState(false)
@@ -123,11 +159,19 @@ const App = () => {
               openModal={openModal}
               handleDeleteCard={handleDeleteCard}
               handleEditCard={handleEditCard}
+<<<<<<< HEAD
               handleCreateBoard={handleCreateBoard}
               board={board}
             />
           </Route>
         </Switch>
+=======
+            />
+          </Route>
+
+        </Switch>
+
+>>>>>>> 61e37d2235bd3d0741a927bd98cfc24385d365fc
         <RetroModal
           open={open}
           closeModal={closeModal}
@@ -137,8 +181,35 @@ const App = () => {
           handleSaveEditedRetro={handleSaveEditedRetro}
           retroEdit={retroEdit}
         />
+<<<<<<< HEAD
+=======
+
+>>>>>>> 61e37d2235bd3d0741a927bd98cfc24385d365fc
       </BoardContext.Provider>
     </Router>
   )
 };
+<<<<<<< HEAD
 export default App
+=======
+export default App
+
+
+
+// !!Object.entries(board).length && (<div className='container'>
+// {board.categories.map((category, index) => {
+//   return (
+//     <Header
+//       catId={category._id}
+//       key={category._id}
+//       catIndex={index}
+//       title={category.title}
+//       onClick={openModal}
+//       items={category.retros}
+//       onDeleteRetro={handleDeleteCard}
+//       onEditRetro={handleEditCard}
+//     />
+//   )
+// })}
+// </div>)
+>>>>>>> 61e37d2235bd3d0741a927bd98cfc24385d365fc
