@@ -27,7 +27,6 @@ const useStyles = makeStyles(theme => {
         },
         title: {
             fontSize: theme.typography.h6.fontSize,
-
         },
         pos: {
             marginBottom: 1,
@@ -36,8 +35,7 @@ const useStyles = makeStyles(theme => {
             flexBasis: '150px',
             padding: '0.5rem',
             overflowWrap: 'break-word',
-            fontSize: '30px',
-            height: '1.25rem'
+            fontSize: '30px'
         },
         content: {
             display: 'flex',
@@ -46,7 +44,6 @@ const useStyles = makeStyles(theme => {
             overflowWrap: 'break-word',
             fontSize: '72pt',
             minHeight: '65px',
-
         }
     })
 });
@@ -125,6 +122,5 @@ export const RetroCardList = ({ items, catIndex, onDeleteRetro, onEditRetro }) =
         )
     })
 }
-
 
 export default RetroCard

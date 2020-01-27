@@ -2,20 +2,8 @@ import React, { useState } from 'react';
 import { makeStyles, fade } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-<<<<<<< HEAD
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import CreateBoardModal from './CreateBoardModal'
-
-=======
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
-import CreateBoardModal from './CreateBoardModal'
-import TextField from '@material-ui/core/TextField';
-import { BoardContext } from './App.js'
-import Typography from '@material-ui/core/Typography';
-import { fetchData } from './utils.js'
->>>>>>> 61e37d2235bd3d0741a927bd98cfc24385d365fc
-
 
 const useStyles = makeStyles(theme => ({
     toolbar: {
@@ -62,22 +50,7 @@ const useStyles = makeStyles(theme => ({
 const NavBar = ({ handleCreateBoard, setBoard }) => {
     const [createOpen, setCreateOpen] = useState(false)
     const classes = useStyles();
-
     const closeCreateModal = () => setCreateOpen(false);
-
-    const handleLoadClick = () => {
-        try {
-            fetchData('/api/load', 'POST', { 'board_id': boardIdDisplay })
-                .then(async res => {
-                    const board = await res.json();
-                    setBoard(board)
-                }).catch(e => {
-                    throw e;
-                })
-        } catch (e) {
-            console.log('error loading board:', e.toString())
-        }
-    }
 
     return (
         <>
