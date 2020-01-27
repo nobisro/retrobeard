@@ -6,10 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
     btn: {
-        // background: 'green',
         borderRadius: 3,
-        // alignItems: 'flex-end',
-        // marginTop: '7rem'
     },
 }))
 

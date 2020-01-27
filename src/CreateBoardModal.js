@@ -3,6 +3,7 @@ import { Modal, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { HeaderButton, AddCardButton } from './RetroButtons'
 
+
 const useCreateBoardStyle = makeStyles(theme => ({
     root: {
         color: 'black',
@@ -34,7 +35,6 @@ const getModalStyle = () => {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         display: 'flex',
-        // alignItems: 'center'
     };
 }
 
@@ -86,18 +86,22 @@ const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModa, onBackdrop
 
         >
             <div style={modalStyle} className={classes.paper}>
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between'
-                }}>
-                    <span className={classes.title}>Create your Retro Beard
+                <div
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+
+                    }}
+                >
+                    <span className={classes.title}>Create your Retrobeard
                     </span>
                     <HeaderButton onClick={addCategory} />
                 </div>
-                {Object.keys(categories).map(cat => {
+                {Object.keys(categories).map((cat, index) => {
                     return (
                         <TextField
+                            key={index}
                             id="standard-full-width"
                             label={`Category #${cat}`}
                             style={{ margin: 8 }}
@@ -113,7 +117,9 @@ const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModa, onBackdrop
                     )
                 })}
                 <div style={{
-                    marginTop: 'auto'
+                    marginTop: 'auto',
+                    display: 'flex',
+                    justifyContent: 'center',
                 }}>
                     <AddCardButton
                         onClick={handleSubmit}

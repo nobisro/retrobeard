@@ -37,8 +37,8 @@ const ChildApp = ({
         return (
           <>
             <Header
+              key={index}
               catId={category._id}
-              key={category._id}
               catIndex={index}
               title={category.title}
               onClick={openModal}

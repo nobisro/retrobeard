@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
@@ -7,11 +7,9 @@ import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { BoardContext } from './App.js'
-
-const BACKGROUND_COLOR_MAP = ['#1d781d', '#01768b', '#ff960b', '#7f187f']
+import { BACKGROUND_COLOR_MAP } from './constants'
 
 const useStyles = makeStyles(theme => {
-    console.log('theme:', theme)
     return ({
         container: {
             display: 'flex',
@@ -83,16 +81,22 @@ const RetroCard = ({ id, title, description, catId, catIndex, onDeleteRetro, onE
                             display: 'flex',
                             justifyContent: 'space-around',
                             paddingBottom: '0.5rem',
-                            fontSize: '1rem',
+                            fontSize: '.75rem',
                         }}
                     >
-                        <span onClick={() => {
+                        <span style={{
+                            display: 'flex',
+                            alignItems: 'center'
+                        }} onClick={() => {
                             onEditRetro(catId, id)
                         }}>
                             <EditIcon />
                             Edit
                 </span>
-                        <span onClick={() => {
+                        <span style={{
+                            display: 'flex',
+                            alignItems: 'center'
+                        }} onClick={() => {
                             onDeleteRetro(board_id, catId, id)
                         }}>
                             <DeleteIcon />

@@ -82,7 +82,7 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
             onClose={clearAll}
         >
             <div style={modalStyle} className={classes.paper}>
-                <p className={classes.bold}>Title</p>
+                <p className={classes.bold}>Title:</p>
                 <Input
                     color='primary'
                     type='text'
@@ -96,7 +96,7 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
                     value={title}
                     error={!isValid}
                 />
-                <p className={classes.bold}>Description</p>
+                <p className={classes.bold}>Description:</p>
                 <textarea
                     placeholder='Optional'
                     className={classes.description}
@@ -128,6 +128,8 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
                 </div>
 
                 <div style={{
+                    // display: 'flex',
+                    // justifyContent: 'center',
                     marginTop: 'auto'
                 }}>
                     <AddCardButton
@@ -149,9 +151,6 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
                             }
 
                             const validatedDescription = description.length ? description : 'No description provided.'
-
-                            console.log(boardID, catId, title, validatedDescription)
-
                             handleAddCard({
                                 board_id: boardID,
                                 category_id: catId,
