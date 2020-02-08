@@ -2,11 +2,19 @@ import React, { useState } from 'react'
 import { Modal, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { HeaderButton, AddCardButton } from './RetroButtons'
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 const useCreateBoardStyle = makeStyles(theme => ({
     root: {
         color: 'black',
         margin: theme.spacing(1),
+    },
+    formControl: {
+        margin: theme.spacing(1),
+        minWidth: 120,
     },
     paper: {
         display: 'flex',
@@ -37,7 +45,7 @@ const getModalStyle = () => {
     };
 }
 
-const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModa, onBackdropClick }) => {
+const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModa, onBackdropClick, selectedTeam }) => {
     const [modalStyle] = React.useState(getModalStyle)
     const classes = useCreateBoardStyle()
     const [categories, setCategories] = useState({ 0: '' })
@@ -67,7 +75,7 @@ const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModa, onBackdrop
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(categories)
+            body: JSON.stringify({ 'categories': categories, 'team': selectedTeam })
         }).then(async response => {
             const id = await response.json();
             window.location.replace(`/b/${id}`)

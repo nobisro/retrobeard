@@ -23,14 +23,16 @@ const ChildApp = ({
   const { id } = useParams();
 
   useEffect(() => {
+    console.log('using effect')
     fetchData('/api/load', 'POST', { 'board_id': id })
       .then(async res => {
         const b = await res.json();
+        console.log('board:', b)
         handleCreateBoard(b)
       }).catch(e => {
         throw e;
       })
-  }, [id, handleCreateBoard])
+  }, [])
   return !!Object.entries(board).length && (
     <div className='container'>
       {board.categories.map((category, index) => {
@@ -61,6 +63,20 @@ const App = () => {
 
   const handleCreateBoard = board => {
     setBoard(board)
+  }
+
+  const handleSetAdjacentBoard = (direction) => {
+    fetchData(
+      '/api/load_adjacent',
+      'POST',
+      { 'team': board.team, 'created': board.created, 'direction': direction }
+    ).then(async res => {
+      const adjacentBoard = await res.json();
+      console.log('body:', adjacentBoard)
+      setBoard(adjacentBoard)
+    }).catch(e => {
+      console.log(e.toString())
+    })
   }
 
   const openModal = (catId) => {
@@ -115,7 +131,11 @@ const App = () => {
       <BoardContext.Provider value={board._id}>
         <NavBar
           handleCreateBoard={handleCreateBoard}
+          handleSetAdjacentBoard={handleSetAdjacentBoard}
           setBoard={setBoard}
+          team={board.team}
+          board_id={board._id}
+          created={board.created}
         />
         <Switch>
           <Route path="/b/:id">

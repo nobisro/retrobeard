@@ -8,3 +8,4 @@ export const fetchData = (endpoint, method, body) => {
         body: JSON.stringify(body)
     })
 }
+

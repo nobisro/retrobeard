@@ -28,6 +28,18 @@ const BoardSchema = new mongoose.Schema({
     categories: {
         type: [CategorySchema],
         default: undefined
+    },
+    team: {
+        type: String,
+    },
+    created: {
+        type: Number
+    }
+})
+
+const TeamSchema = new mongoose.Schema({
+    name: {
+        type: String
     }
 })
 
@@ -42,7 +54,9 @@ const Category = mongoose.model('Category', CategorySchema)
 
 const Board = mongoose.model('User', BoardSchema)
 
+const Team = mongoose.model('Team', TeamSchema);
+
 
 module.exports = {
-    Retro, Category, Board
+    Retro, Category, Board, Team
 }

@@ -4,7 +4,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const { models, connectDb } = require('./src/models/index')
 const ObjectId = require('mongoose').Types.ObjectId;
-const { Retro, Category, Board } = models;
+const { Retro, Category, Board, Team } = models;
 const app = express();
 const port = process.env.PORT || 1337;
 
@@ -26,6 +26,34 @@ app.get('/api/test/:id', (req, res) => {
 app.get('/api/redirect', (req, res) => {
     const id = Math.floor(Math.random() * 100)
     res.redirect(`/api/test/${id}`)
+})
+
+app.get('/api/teams', async (req, res) => {
+    const teams = await Team.find({});
+    res.send(teams);
+})
+
+app.post('/api/teams', async (req, res) => {
+    const name = req.params.name
+    const team = new Team(name)
+    const saved = await team.save();
+    res.send(saved);
+})
+
+app.post('/api/edit_team', async (req, res) => {
+    const { board_id, team } = req.body;
+
+    // This occurs when user selects their team prior to loading a board
+    if (team === null) {
+        console.log('team is null')
+        res.send(200)
+        return;
+    }
+
+    const board = await Board.findOne({ "_id": ObjectId(board_id) });
+    board.team = team;
+    const saved = await board.save()
+    res.send(JSON.stringify(saved.team))
 })
 
 app.post('/api/edit', async (req, res) => {
@@ -99,13 +127,16 @@ app.post('/api/delete', async (req, res) => {
 })
 
 app.post('/api/create', async (req, res) => {
-    const categories = Object.values(req.body).map(category => new Category({
+    const { categories, team } = req.body;
+
+    const cats = Object.values(categories).map(category => new Category({
         title: category
     }))
     const board = new Board({
-        categories: categories,
+        categories: cats,
+        team: team,
+        created: new Date().getTime()
     })
-
 
     try {
         const created = await board.save();
@@ -113,7 +144,6 @@ app.post('/api/create', async (req, res) => {
     } catch (e) {
         console.log('error creating:', JSON.stringify(e))
     }
-
 })
 
 app.post('/api/load', async (req, res) => {
@@ -126,6 +156,34 @@ app.post('/api/load', async (req, res) => {
     } catch (e) {
         res.send(new Error('could not load'))
         console.log('error loading:', JSON.stringify(e))
+    }
+})
+
+app.post('/api/load_adjacent', async (req, res) => {
+    const { team, created, direction } = req.body;
+    const boards = await Board.find({ "team": team })
+
+    //sort boards from earliest to newest
+    boards.sort((a, b) => {
+        return a.created - b.created
+    })
+
+    console.log(`all boards from: ${team}`, boards)
+    console.log('direction:', direction)
+
+    const i = boards.findIndex(board => board.created === created)
+    console.log('index of board:', i)
+
+    if (direction === 'BACK') {
+        const prev = i - 1;
+        if (prev >= 0) {
+            res.send(boards[prev])
+        }
+    } else if (direction === 'FORWARD') {
+        const next = i + 1;
+        if (next <= boards.length - 1) {
+            res.send(boards[next])
+        }
     }
 })
 
