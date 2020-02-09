@@ -17,17 +17,6 @@ app.all('/b/*', (req, res) => {
     res.sendFile(path.join(__dirname, 'dist', 'index.html'))
 })
 
-app.get('/api/test/:id', (req, res) => {
-    const id = req.params.id
-    console.log('test req received')
-    res.send(`yo: ${id}`)
-})
-
-app.get('/api/redirect', (req, res) => {
-    const id = Math.floor(Math.random() * 100)
-    res.redirect(`/api/test/${id}`)
-})
-
 app.get('/api/teams', async (req, res) => {
     const teams = await Team.find({});
     res.send(teams);
@@ -38,22 +27,6 @@ app.post('/api/teams', async (req, res) => {
     const team = new Team(name)
     const saved = await team.save();
     res.send(saved);
-})
-
-app.post('/api/edit_team', async (req, res) => {
-    const { board_id, team } = req.body;
-
-    // This occurs when user selects their team prior to loading a board
-    if (team === null) {
-        console.log('team is null')
-        res.send(200)
-        return;
-    }
-
-    const board = await Board.findOne({ "_id": ObjectId(board_id) });
-    board.team = team;
-    const saved = await board.save()
-    res.send(JSON.stringify(saved.team))
 })
 
 app.post('/api/edit', async (req, res) => {
@@ -82,7 +55,7 @@ app.post('/api/edit', async (req, res) => {
 
 app.post('/api/save', async (req, res) => {
     const { board_id, category_id, title, description } = req.body
-    if (board_id && category_id && title && description) {
+    if (board_id && category_id && title) {
         const retro = new Retro({
             board_id: board_id,
             category_id: category_id,
@@ -128,13 +101,20 @@ app.post('/api/delete', async (req, res) => {
 
 app.post('/api/create', async (req, res) => {
     const { categories, team } = req.body;
+    let validTeam = '';
+
+    if (!team || team === 'select a team') {
+        validTeam = 'No Team'
+    } else {
+        validTeam = team;
+    }
 
     const cats = Object.values(categories).map(category => new Category({
         title: category
     }))
     const board = new Board({
         categories: cats,
-        team: team,
+        team: validTeam,
         created: new Date().getTime()
     })
 
@@ -148,14 +128,33 @@ app.post('/api/create', async (req, res) => {
 
 app.post('/api/load', async (req, res) => {
     const { board_id } = req.body;
-    try {
-        if (board_id) {
+    if (board_id) {
+        try {
             const board = await Board.findOne({ "_id": ObjectId(board_id) })
             res.send(board)
+        } catch (e) {
+            res.status(500).send('Error finding board')
         }
-    } catch (e) {
-        res.send(new Error('could not load'))
-        console.log('error loading:', JSON.stringify(e))
+    }
+    res.end()
+})
+
+app.post('/api/load_team', async (req, res) => {
+    const { team } = req.body;
+    if (!team) {
+        res.sendStatus(400)
+        return
+    }
+
+    const boards = await Board.find({ "team": team });
+
+    // Get the most recent board
+    if (boards.length) {
+        boards.sort((a, b) => b.created - a.created)
+        const recent = boards[0];
+        res.send(recent._id)
+    } else {
+        res.send(JSON.stringify(''))
     }
 })
 
@@ -163,28 +162,40 @@ app.post('/api/load_adjacent', async (req, res) => {
     const { team, created, direction } = req.body;
     const boards = await Board.find({ "team": team })
 
+    if (!boards || !boards.length) {
+        res.end()
+    }
+
     //sort boards from earliest to newest
     boards.sort((a, b) => {
         return a.created - b.created
     })
 
-    console.log(`all boards from: ${team}`, boards)
-    console.log('direction:', direction)
-
     const i = boards.findIndex(board => board.created === created)
-    console.log('index of board:', i)
 
     if (direction === 'BACK') {
         const prev = i - 1;
         if (prev >= 0) {
-            res.send(boards[prev])
+            const prevBoard = boards[prev]
+            res.send(prevBoard._id)
+        } else {
+            res.end()
         }
     } else if (direction === 'FORWARD') {
         const next = i + 1;
         if (next <= boards.length - 1) {
-            res.send(boards[next])
+            const nextBoard = boards[next]
+            res.send(nextBoard._id)
+        } else {
+            res.end()
         }
     }
+})
+
+app.delete('/api/delete', async (req, res) => {
+    const { board_id } = req.body
+    const deleted = await Board.deleteOne({ "_id": ObjectId(board_id) })
+    res.sendStatus(Boolean(deleted.ok) ? 200 : 500)
 })
 
 connectDb().then(async () => {

@@ -3,8 +3,9 @@ import { RetroCardList } from './RetroCard.js'
 import { HeaderButton } from './RetroButtons.js';
 import { Typography } from '@material-ui/core';
 
-const Header = (props) => {
-    const { title, catId, catIndex, onClick, onDeleteRetro, onEditRetro, items = [] } = props
+const Category = (props) => {
+    const { title, categoryId, categoryIndex, onClick, onDeleteRetro, onEditRetro, items = [] } = props
+
     return (
         <div className='header'>
             <div className="header-title-container">
@@ -14,18 +15,18 @@ const Header = (props) => {
                     </Typography>
                 </span>
                 <HeaderButton
-                    onClick={onClick}
-                    catId={catId}
+                    handleClick={onClick}
+                    categoryId={categoryId}
                 />
             </div>
             <RetroCardList
                 items={items}
                 onDeleteRetro={onDeleteRetro}
                 onEditRetro={onEditRetro}
-                catIndex={catIndex}
+                categoryIndex={categoryIndex}
             />
         </div>
     )
 }
 
-export default Header;
+export default Category;

@@ -5,10 +5,12 @@
   flex-wrap: wrap;
   font-size: 1.4rem;
   padding: 0.5rem 2rem;
-  background-color:  #d5d5f4;
+  background-color:  #dcdcee;
+
 }
 
 .header {
+  position: sticky;
   font-weight: bold;
   flex-basis: 0;
   flex-grow: 1;
@@ -24,7 +26,6 @@
   align-content: center;
   justify-content: center;
   align-items: center;
-
 }
 
 .button {

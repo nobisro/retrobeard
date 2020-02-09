@@ -43,12 +43,12 @@ const useStyles = makeStyles(theme => {
             justifyContent: 'center',
             overflowWrap: 'break-word',
             fontSize: '72pt',
-            minHeight: '65px',
+            minHeight: '60px',
         }
     })
 });
 
-const RetroCard = ({ id, title, description, catId, catIndex, onDeleteRetro, onEditRetro }) => {
+const RetroCard = ({ id, title, description, categoryId, categoryIndex, onDeleteRetro, onEditRetro }) => {
     const classes = useStyles();
     const board_id = React.useContext(BoardContext)
     return (
@@ -61,7 +61,7 @@ const RetroCard = ({ id, title, description, catId, catIndex, onDeleteRetro, onE
                             lineHeigth: '1'
                         }}>{title}</span>}
                         className={classes.header}
-                        style={{ backgroundColor: BACKGROUND_COLOR_MAP[catIndex], fontSize: 10 }}
+                        style={{ backgroundColor: BACKGROUND_COLOR_MAP[categoryIndex], fontSize: 10 }}
                     >
                     </CardHeader>
                     <CardContent className={classes.content}>
@@ -85,7 +85,7 @@ const RetroCard = ({ id, title, description, catId, catIndex, onDeleteRetro, onE
                             display: 'flex',
                             alignItems: 'center'
                         }} onClick={() => {
-                            onEditRetro(catId, id)
+                            onEditRetro(categoryId, id)
                         }}>
                             <EditIcon />
                             Edit
@@ -94,7 +94,7 @@ const RetroCard = ({ id, title, description, catId, catIndex, onDeleteRetro, onE
                             display: 'flex',
                             alignItems: 'center'
                         }} onClick={() => {
-                            onDeleteRetro(board_id, catId, id)
+                            onDeleteRetro(board_id, categoryId, id)
                         }}>
                             <DeleteIcon />
                             Delete
@@ -106,7 +106,7 @@ const RetroCard = ({ id, title, description, catId, catIndex, onDeleteRetro, onE
     );
 }
 
-export const RetroCardList = ({ items, catIndex, onDeleteRetro, onEditRetro }) => {
+export const RetroCardList = ({ items, categoryIndex, onDeleteRetro, onEditRetro }) => {
     return items.map(item => {
         return (
             <RetroCard
@@ -114,8 +114,8 @@ export const RetroCardList = ({ items, catIndex, onDeleteRetro, onEditRetro }) =
                 key={item._id}
                 title={item.title}
                 description={item.description}
-                catId={item.category_id}
-                catIndex={catIndex}
+                categoryId={item.category_id}
+                categoryIndex={categoryIndex}
                 onDeleteRetro={onDeleteRetro}
                 onEditRetro={onEditRetro}
             />

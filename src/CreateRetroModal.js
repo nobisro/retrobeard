@@ -44,7 +44,7 @@ const getModalStyle = () => {
     };
 }
 
-const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSaveEditedRetro, retroEdit }) => {
+const CreateRetroModal = ({ open, isEdit, categoryId, retroEdit, handleCloseModal, handleAddCard, handleSaveEditedRetro }) => {
     const classes = useModalStyle()
 
     const [modalStyle] = React.useState(getModalStyle)
@@ -78,7 +78,7 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
         <Modal
             className={classes.root}
             open={open}
-            onBackdropClick={closeModal}
+            onBackdropClick={handleCloseModal}
             onClose={clearAll}
         >
             <div style={modalStyle} className={classes.paper}>
@@ -137,7 +137,6 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
                             validateTitle(title);
 
                             if (!isValid) {
-                                console.log('not valid')
                                 return;
                             }
 
@@ -150,12 +149,11 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
                                 return;
                             }
 
-                            const validatedDescription = description.length ? description : 'No description provided.'
                             handleAddCard({
                                 board_id: boardID,
-                                category_id: catId,
+                                category_id: categoryId,
                                 title: title,
-                                description: validatedDescription,
+                                description: description,
                             })
                             clearAll()
                         }}
@@ -168,4 +166,4 @@ const RetroModal = ({ open, closeModal, handleAddCard, catId, isEdit, handleSave
     )
 }
 
-export default RetroModal;
+export default CreateRetroModal;

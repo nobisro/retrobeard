@@ -10,13 +10,13 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-export const HeaderButton = ({ onClick, catId }) => {
+export const HeaderButton = ({ handleClick, categoryId }) => {
     return (
         <div className="header-button">
             <IconButton
                 color='primary'
                 size='small'
-                onClick={() => onClick(catId)}
+                onClick={() => handleClick(categoryId)}
             >
                 <AddIcon />
             </IconButton>
@@ -30,6 +30,20 @@ export const AddCardButton = ({ onClick, text }) => {
         <Button
             variant="contained"
             color="primary"
+            className={classes.btn}
+            onClick={onClick}
+        >
+            {text}
+        </Button>
+    )
+}
+
+export const DeleteBoardButton = ({ onClick, text }) => {
+    const classes = useStyles();
+    return (
+        <Button
+            variant="contained"
+            color="secondary"
             className={classes.btn}
             onClick={onClick}
         >

@@ -2,10 +2,8 @@ import React, { useState } from 'react'
 import { Modal, TextField } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { HeaderButton, AddCardButton } from './RetroButtons'
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import { fetchData } from './utils'
+import { ROUTES } from './constants'
 
 const useCreateBoardStyle = makeStyles(theme => ({
     root: {
@@ -45,7 +43,7 @@ const getModalStyle = () => {
     };
 }
 
-const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModa, onBackdropClick, selectedTeam }) => {
+const CreateBoardModal = ({ open, handleClose, selectedTeam }) => {
     const [modalStyle] = React.useState(getModalStyle)
     const classes = useCreateBoardStyle()
     const [categories, setCategories] = useState({ 0: '' })
@@ -69,14 +67,11 @@ const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModa, onBackdrop
     }
 
     const handleSubmit = () => {
-        fetch('/api/create', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 'categories': categories, 'team': selectedTeam })
-        }).then(async response => {
+        fetchData(
+            ROUTES.CREATE,
+            ROUTES.METHODS.POST,
+            { 'categories': categories, 'team': selectedTeam }
+        ).then(async response => {
             const id = await response.json();
             window.location.replace(`/b/${id}`)
         })
@@ -88,7 +83,7 @@ const CreateBoardModal = ({ open, handleCreateBoard, closeCreateModa, onBackdrop
     return (
         <Modal
             open={open}
-            onBackdropClick={onBackdropClick}
+            onBackdropClick={handleClose}
 
         >
             <div style={modalStyle} className={classes.paper}>
