@@ -84,7 +84,6 @@ const CreateBoardModal = ({ open, handleClose, selectedTeam }) => {
         <Modal
             open={open}
             onBackdropClick={handleClose}
-
         >
             <div style={modalStyle} className={classes.paper}>
                 <div
@@ -97,7 +96,7 @@ const CreateBoardModal = ({ open, handleClose, selectedTeam }) => {
                 >
                     <span className={classes.title}>Create your Retrobeard
                     </span>
-                    <HeaderButton onClick={addCategory} />
+                    <HeaderButton handleClick={addCategory} />
                 </div>
                 {Object.keys(categories).map((cat, index) => {
                     return (
